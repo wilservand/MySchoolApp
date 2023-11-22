@@ -21,7 +21,7 @@ class Pengurus:
         query = 'INSERT INTO pengurus (Nama_Pengurus, Jabatan_Pengurus, NUPTK_Pengurus, MataPelajaran_Pengurus, TTL_Pengurus) VALUES ("' + Nama_Pengurus +'","'+ Jabatan_Pengurus + '","'+ NUPTK_Pengurus + '","' + MataPelajaran_Pengurus + '","' + TTL_Pengurus + '")'
         self.curr.execute(query)
         self.conn.commit()
-        print('Proses penambahan selesai')
+        print('Proses penambahan')
     def updatedatapengurus (self, NUPTK_Pengurus):
         while True:
             pilih = input("""Silahkan pilih mau mengubah antara (Number Only) 
