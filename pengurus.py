@@ -1,4 +1,4 @@
-class Pengurus:
+class Pengurusaaaa:
     def __init__(self, conn, cursor):
         self.curr = cursor
         self.conn = conn
