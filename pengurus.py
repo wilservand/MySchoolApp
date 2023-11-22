@@ -3,7 +3,7 @@ class Pengurus:
         self.curr = cursor
         self.conn = conn
     def show_pengurus(self):
-        search = input("Input NUPTK Pengurus yang ingin datanyaaaa dicari?")
+        search = input("Input NUPTK Pengurus yang ingin datanya dicari?")
         self.curr.execute('SELECT * FROM pengurus WHERE NUPTK_Pengurus =' + search)
         result = self.curr.fetchall()
         print(result)
