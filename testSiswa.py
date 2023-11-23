@@ -42,8 +42,9 @@ class Siswa():
         self.conn.commit()
 
     def setKelasSiswa(self,kelasSiswa,nisSiswa):
-        sql = "UPDATE `data_siswa` SET `kelas` = (%s) WHERE `nis` = (%s)"
-        self.curr.execute(sql, (kelasSiswa, nisSiswa))
+        kolom = input("")
+        sql = "UPDATE `data_siswa` SET (%s) = (%s) WHERE `nis` = (%s)"
+        self.curr.execute(sql, (kolom,kelasSiswa, nisSiswa))
         sql2 = "SELECT * FROM `data_siswa` WHERE `nis` = (%s)"
         self.curr.execute(sql2, (nisSiswa))
         result = self.curr.fetchone()
