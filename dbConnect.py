@@ -7,11 +7,12 @@ class mainDB:
             try:
                 username = str(input("Username: "))
                 passwords = str(input("Password: "))
-                con = pymysql.connect(host='database-myschoolapp.ciqnmiwbcceb.us-east-1.rds.amazonaws.com', port=3306,
+                con = pymysql.connect(host='database-myschool.ciqnmiwbcceb.us-east-1.rds.amazonaws.com', port=3306,
 
                                       user=username,
                                       password=passwords,
-                                      database='siswa',
+                                      database="siswa",
+
                                       )
                 cur = con.cursor()
                 return con, cur
