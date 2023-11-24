@@ -46,8 +46,8 @@ Masukkan Pilihan: """))
         else:
             print("Masukkan Pilihan yang Benar!!!")
             continue
-sql111 = 'CREATE TABLE data_siswa( nama VARCHAR(255) NOT NULL DEFAULT "", kelas VARCHAR(255) NOT NULL DEFAULT "", nis INT NOT NULL DEFAULT 0, gender ENUM("Pria","Wanita","") NOT NULL DEFAULT "");'
-curr_dbApp.execute(sql111)
+#sql111 = 'CREATE TABLE data_siswa( nama VARCHAR(255) NOT NULL DEFAULT "", kelas VARCHAR(255) NOT NULL DEFAULT "", nis INT NOT NULL DEFAULT 0, gender ENUM("Pria","Wanita","") NOT NULL DEFAULT "");'
+#curr_dbApp.execute(sql111)
 conn_dbApp.commit()
 appOperation()
 
