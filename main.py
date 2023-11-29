@@ -1,3 +1,5 @@
+#import login
+import tkinter
 from dbConnect import *
 from testSiswa import *
 from mataPel import *
@@ -5,7 +7,9 @@ from pengurus import *
 from kelas2 import *
 from AbsenFix import *
 from Nilai import *
+#from login import *
 
+#root = tk.Tk()
 dbApp = mainDB()
 conn_dbApp, curr_dbApp = dbApp.connect()
 
@@ -15,6 +19,8 @@ tbl_pengurus = Pengurus(conn=conn_dbApp, cursor=curr_dbApp)
 x_kelas = kelas(conn=conn_dbApp, curr=curr_dbApp)
 x_absensi = absensi(conn=conn_dbApp, curr=curr_dbApp)
 x_nilai = nilai(con=conn_dbApp, cur=curr_dbApp)
+#login_page = LoginPage(root)
+
 
 
 def appOperation():
@@ -48,8 +54,11 @@ Masukkan Pilihan: """))
             continue
 #sql111 = 'CREATE TABLE data_siswa( nama VARCHAR(255) NOT NULL DEFAULT "", kelas VARCHAR(255) NOT NULL DEFAULT "", nis INT NOT NULL DEFAULT 0, gender ENUM("Pria","Wanita","") NOT NULL DEFAULT "");'
 #curr_dbApp.execute(sql111)
-conn_dbApp.commit()
-appOperation()
+#sql112 = 'FLUSH PRIVILEGES;'
+#curr_dbApp.execute(sql112)
+#conn_dbApp.commit()
+
+#root.mainloop()
 
 
 
