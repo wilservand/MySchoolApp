@@ -14,15 +14,23 @@ class Nilai (ct.CTkFrame):
         self.curr = curr_dbApp
         self.conn = conn_dbApp
         self.font = ct.CTkFont(family='montserrat', size=17)
+        self.nilai_frames = {}
         self.setup_ui()
         self.frame_nilai()
-        self.show_nilai_button = ct.CTkButton(text="show nilai murid",
+        self.pilihan_menu = pilihan_menu(self)
+        self.show_nilai_button = ct.CTkButton(master=self.pilihan_menu,text="show nilai murid",
                                            command=lambda: self.pindah_show_nilai())
-        self.create_window(130, 180, window=self.profile_button, anchor=tkinter.CENTER)
-        self.ubah_nilai_tugas_button = ct.CTkButton(text="ubah nilai tugas murid",
+        self.show_nilai_button.configure(height = 20, width = 50)
+        self.show_nilai_button.place(x = 70, y = 70)
+        #(130, 180, window=self.profile_button, anchor=tkinter.CENTER)
+        self.ubah_nilai_tugas_button = ct.CTkButton(master=self.pilihan_menu,text="ubah nilai tugas murid",
                                            command=lambda: self.pindah_ubah_nilai_tugas())
-        self.ubah_nilai_ujian_button = ct.CTkButton(text="ubah nilai ujian murid",
+        self.ubah_nilai_tugas_button.configure(height = 20, width = 50)
+        self.ubah_nilai_tugas_button.place(x = 120, y = 70)
+        self.ubah_nilai_ujian_button = ct.CTkButton(master=self.pilihan_menu,text="ubah nilai ujian murid",
                                            command=lambda: self.pindah_ubah_nilai_ujian())
+        self.ubah_nilai_ujian_button.configure(height = 20, width = 50)
+        self.ubah_nilai_ujian_button.place(x = 170, y = 70)
 
     def setup_ui(self):
         self.NilaiFrame = ct.CTkFrame(master=self, fg_color='#ccffff')
@@ -44,7 +52,7 @@ class Nilai (ct.CTkFrame):
             frame.place_forget()
 
         if frame_name is not None:
-            new_frame = self.dash_frames[frame_name]
+            new_frame = self.nilai_frames[frame_name]
             new_frame.place(relx=0, rely=0, relwidth=1, relheight=1)
 
     def pindah_show_nilai(self):
@@ -58,7 +66,7 @@ class Nilai (ct.CTkFrame):
 
 class pilihan_menu(ct.CTkCanvas):
     def __init__(self,parent):
-        super().__init__(parent, width=280, height=, bg=(224,224,224), bd=0)
+        super().__init__(parent, width=280, height=70, bg=('grey'), bd=0)
         self.button_callback = None
         self.menu_logo = Image.open(r"C:\Users\ASUS\OneDrive\Desktop\Desain tanpa judul.jpg")
         new_size = (150, 75)
@@ -76,7 +84,6 @@ class show_nilai(ct.CTkFrame):
         self.curr = curr_dbApp
         self.conn = conn_dbApp
         self.font = ct.CTkFont(family='montserrat', size=17)
-        self.setup_ui()
 
 class ubah_nilai_tugas(ct.CTkFrame):
     def __init__(self, master, controller):
@@ -86,7 +93,6 @@ class ubah_nilai_tugas(ct.CTkFrame):
         self.curr = curr_dbApp
         self.conn = conn_dbApp
         self.font = ct.CTkFont(family='montserrat', size=17)
-        self.setup_ui()
 
 class ubah_nilai_ujian(ct.CTkFrame):
     def __init__(self, master, controller):
@@ -96,4 +102,3 @@ class ubah_nilai_ujian(ct.CTkFrame):
         self.curr = curr_dbApp
         self.conn = conn_dbApp
         self.font = ct.CTkFont(family='montserrat', size=17)
-        self.setup_ui()
