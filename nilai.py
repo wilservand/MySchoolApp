@@ -1,5 +1,5 @@
-import tkinter
-from tkinter import messagebox
+import tkinter as tk
+from tkinter import messagebox,ttk
 import customtkinter as ct
 from PIL import ImageTk, Image
 from main import *
@@ -16,89 +16,77 @@ class Nilai (ct.CTkFrame):
         self.font = ct.CTkFont(family='montserrat', size=17)
         self.nilai_frames = {}
         self.setup_ui()
-        self.frame_nilai()
-        self.pilihan_menu = pilihan_menu(self)
-        self.show_nilai_button = ct.CTkButton(master=self.pilihan_menu,text="show nilai murid",
-                                           command=lambda: self.pindah_show_nilai())
-        self.show_nilai_button.configure(height = 20, width = 50)
-        self.show_nilai_button.place(x = 70, y = 70)
-        #(130, 180, window=self.profile_button, anchor=tkinter.CENTER)
-        self.ubah_nilai_tugas_button = ct.CTkButton(master=self.pilihan_menu,text="ubah nilai tugas murid",
-                                           command=lambda: self.pindah_ubah_nilai_tugas())
-        self.ubah_nilai_tugas_button.configure(height = 20, width = 50)
-        self.ubah_nilai_tugas_button.place(x = 120, y = 70)
-        self.ubah_nilai_ujian_button = ct.CTkButton(master=self.pilihan_menu,text="ubah nilai ujian murid",
-                                           command=lambda: self.pindah_ubah_nilai_ujian())
-        self.ubah_nilai_ujian_button.configure(height = 20, width = 50)
-        self.ubah_nilai_ujian_button.place(x = 170, y = 70)
 
     def setup_ui(self):
         self.NilaiFrame = ct.CTkFrame(master=self, fg_color='#ccffff')
         self.NilaiFrame.pack(fill='both',expand=True,anchor=tkinter.CENTER)
 
-        self.testLabel = ct.CTkLabel(master=self.NilaiFrame, text="Nilai Page", font=self.font, text_color='black')
-        self.testLabel.place(relx=0.5,rely=0.5, anchor=tkinter.CENTER)
+        self.label()
+        
+        self.entry()
+        
+        self.treeview()
+    
+    def label(self):
+        self.nama = ct.CTkLabel(master=self,fg_color= '#ccffff', text="nama murid",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        self.id = ct.CTkLabel(master=self,fg_color= '#ccffff',text="id murid",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        self.id_kelas = ct.CTkLabel(master=self,fg_color= '#ccffff',text="id kelas",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        self.id_matkul = ct.CTkLabel(master=self,fg_color= '#ccffff',text="matkul",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        self.nilai_tugas = ct.CTkLabel(master=self,fg_color= '#ccffff',text="nilai tugas",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        self.nilai_ujian = ct.CTkLabel(master=self,fg_color= '#ccffff',text="nilai ujian",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        #self.nilai_rata_rata = ct.CTkLabel(master=self,fg_color= '#ccffff',text="rata-rata",anchor="e",justify = "right",width=110,font=('montserrat',17))
+        
+        self.nama.place(x=285, y=100)
+        self.id.place(x=285, y=140)
+        self.id_kelas.place(x=285, y=180)
+        self.id_matkul.place(x=285, y=220)
+        self.nilai_tugas.place(x=285, y=260)
+        self.nilai_ujian.place(x=285, y=300)
+        #self.nilai_rata_rata.place(x=285, y=340)
 
-    def frame_nilai(self):
-        show_nilai_frame = show_nilai(self,self.controller)
-        ubah_nilai_tugas_frame = ubah_nilai_tugas(self,self.controller)
-        ubah_nilai_ujian_frame = ubah_nilai_ujian(self,self.controller)
-        self.nilai_frames [show_nilai] = show_nilai_frame
-        self.nilai_frames [ubah_nilai_tugas]= ubah_nilai_tugas_frame
-        self.nilai_frames [ubah_nilai_ujian]= ubah_nilai_ujian_frame
+    def entry(self):
+        self.nama_var = tk.StringVar()
+        #self.nama_var.trace_add(self.create_message)
+        self.id_var = tk.StringVar()
+        self.id_kelas_var = tk.StringVar()
+        self.id_matkul_var = tk.StringVar()
+        self.nilai_tugas_var = tk.StringVar()
+        self.nilai_ujian_var = tk.StringVar()
 
-    def change_dashFrame(self,frame_name):
-        for frame in self.nilai_frames.values():
-            frame.place_forget()
+        self.entry_nama = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.nama_var, width = 1000)
+        self.entry_nama.place(x=405, y=100)
+        #printing_nama = str(self.nama_var.get())
+        #self.label_nama = ct.CTkLabel(master=self, text = printing_nama, font=('montserrat',17))
+        #self.label_nama.place(x=405, y=130)
+        self.entry_id = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.id_var, width = 1000)
+        self.entry_id.place(x=405, y=140)
+        #printing_id = str(self.id_var.get())
+        ##self.label_id = ct.CTkLabel(master=self, text = printing_id, font=('montserrat',17))
+        #self.label_id.place(x=405, y=130)
+        self.entry_id_kelas = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.id_var, width = 800)
+        self.entry_id_kelas.place(x=405, y=180)
+        self.entry_id_matkul = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.id_var, width = 800)
+        self.entry_id_matkul.place(x=405, y=220)
+        self.entry_nilai_tugas = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.id_var, width = 800)
+        self.entry_nilai_tugas.place(x=405, y=260)
+        self.entry_nilai_ujian = ct.CTkEntry(master=self, font=('montserrat',17), textvariable=self.id_var, width = 800)
+        self.entry_nilai_ujian.place(x=405, y=300)
 
-        if frame_name is not None:
-            new_frame = self.nilai_frames[frame_name]
-            new_frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.hasil_entry_nama = self.entry_nama.get()
+        self.hasil_entry_id = self.entry_id.get()
+        self.hasil_entry_id_kelas = self.entry_id_kelas.get()
+        self.hasil_entry_id_matkul = self.entry_id_matkul.get()
+        self.hasil_entry_nilai_tugas = float(self.entry_nilai_tugas.get())
+        self.hasil_entry_nilai_ujian = float(self.entry_nilai_ujian.get())
 
-    def pindah_show_nilai(self):
-        self.change_dashFrame(show_nilai)
-
-    def pindah_ubah_nilai_tugas(self):
-        self.change_dashFrame(ubah_nilai_tugas)
-
-    def pindah_ubah_nilai_ujian(self):
-        self.change_dashFrame(ubah_nilai_ujian)
-
-class pilihan_menu(ct.CTkCanvas):
-    def __init__(self,parent):
-        super().__init__(parent, width=280, height=70, bg=('grey'), bd=0)
-        self.button_callback = None
-        self.menu_logo = Image.open(r"C:\Users\ASUS\OneDrive\Desktop\Desain tanpa judul.jpg")
-        new_size = (150, 75)
-        self.menu_logo_resized = self.menu_logo.resize(new_size)
-        self.menu_logo_tk = ImageTk.PhotoImage(self.menu_logo_resized)
-        self.create_image(130,55, image=self.menu_logo_tk, anchor=tkinter.CENTER)
-        self.menu_button = ct.CTkButton(self, text="MySchool Menu", command=lambda : self.button_callback())
-        self.create_window(130,120, window=self.menu_button, anchor=tkinter.CENTER)
-
-class show_nilai(ct.CTkFrame):
-    def __init__(self, master, controller):
-        super().__init__(master)
-        self.controller = controller
-        self.master = master
-        self.curr = curr_dbApp
-        self.conn = conn_dbApp
-        self.font = ct.CTkFont(family='montserrat', size=17)
-
-class ubah_nilai_tugas(ct.CTkFrame):
-    def __init__(self, master, controller):
-        super().__init__(master)
-        self.controller = controller
-        self.master = master
-        self.curr = curr_dbApp
-        self.conn = conn_dbApp
-        self.font = ct.CTkFont(family='montserrat', size=17)
-
-class ubah_nilai_ujian(ct.CTkFrame):
-    def __init__(self, master, controller):
-        super().__init__(master)
-        self.controller = controller
-        self.master = master
-        self.curr = curr_dbApp
-        self.conn = conn_dbApp
-        self.font = ct.CTkFont(family='montserrat', size=17)
+    def treeview(self):
+        columns = ('id', 'nama', 'kelas', 'matkul', 'nilai tugas', 'nilai ujian', 'rata-rata')
+        table = ttk.Treeview(self, columns=columns, show='headings')
+        table.heading('id', text='ID')
+        table.heading('nama', text='Nama')
+        table.heading('kelas', text='Kelas')
+        table.heading('matkul', text='Matkul')
+        table.heading('nilai tugas', text='Nilai Tugas')
+        table.heading('nilai ujian', text='Nilai Ujina')
+        table.heading('rata-rata', text='Rata-Rata')
+        
