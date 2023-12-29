@@ -219,6 +219,14 @@ class MySchoolApp(customtkinter.CTk):
         self.matpelFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
         self.matpelFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
 
+
+    def nilaiSiswa(self):
+        for x in self.winfo_children():
+            x.destroy()
+        self.listMenuSiswa()
+        self.nilaiFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
+        self.nilaiFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
+
     def logout(self):
         for x in self.winfo_children():
             x.destroy()
