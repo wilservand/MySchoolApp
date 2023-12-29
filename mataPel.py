@@ -4,13 +4,6 @@ class matapelajaran:
         self.conn = conn
         self.curr = curr
 
-    def select_data(self,id):
-        query = "SELECT * FROM `mata_pelajaran` WHERE `id` = (%s)"
-        self.curr.execute(query, (id, ))
-        result = self.curr.fetchall()
-        for row in result:
-            print(row)
-
     def select_data_all(self): #ini buat show semua data
         query = "SELECT * FROM `mata_pelajaran`"
         self.curr.execute(query)
@@ -23,24 +16,6 @@ class matapelajaran:
         self.curr.execute(query, (id, matapelajaran, pengajar))
         self.conn.commit()
         print("Penambahan selesai")
-
-    def updateDataMapel (self, matapelajaranbaru, id):
-        query = "UPDATE `mata_pelajaran` SET `matapelajaran` = (%s) WHERE `id` = (%s)"  # coba pakai id aja untuk WHEREnya
-        self.curr.execute(query, (matapelajaranbaru, id))
-        query2 = "SELECT * FROM `mata_pelajaran` WHERE `id` = (%s)"
-        self.curr.execute(query2, (id))
-        result = self.curr.fetchone()
-        print(result)
-        self.conn.commit()
-
-    def updateDataID (self, idlama, idbaru):
-        query = "UPDATE `mata_pelajaran` SET `id` = (%s) WHERE `id` = (%s)"  # coba pakai id untuk WHERE
-        self.curr.execute(query, (idbaru, idlama))
-        query2 = "SELECT * FROM `mata_pelajaran` WHERE `id` = (%s)"
-        self.curr.execute(query2, (idbaru))
-        result = self.curr.fetchone()
-        print(result)
-        self.conn.commit()
 
     def updateDataPengajar (self, id, pengajar):
         query = "UPDATE `mata_pelajaran` SET `pengajar` = (%s) WHERE `id` = (%s)"  # sama pakai id
@@ -60,24 +35,14 @@ class matapelajaran:
     def updateDataMapel(self):
         while True:
             pilihData = str(input("""Pilih Data yang Ingin Diubah:
-            1. Mata Pelajaran
-            2. ID
-            3. Pengajar
-            4. Berhenti
+            1. Pengajar
+            2. Berhenti
 Pilihan: """))
             if pilihData == "1":
                 id = input("Masukkan ID: ").upper()
-                matapelajaranbaru = input("Masukkan Matapelajaran yang baru: ").title()
-                self.updateDataMapel(matapelajaranbaru, id)
-            elif pilihData == "2":
-                idLama = input("Masukkan ID yang Lama: ").upper()
-                idBaru = input("Masukkan ID yang Baru: ").upper()
-                self.updateDataID(idLama, idBaru)
-            elif pilihData == "3":
-                id = input("Masukkan ID: ").upper()
                 pengajar = input("Masukkan Pengajar yang Baru: ").title()
                 self.updateDataPengajar(id, pengajar)
-            elif pilihData == "4":
+            elif pilihData == "2":
                 print("Berhenti")
                 break
             else:
@@ -87,16 +52,12 @@ Pilihan: """))
     def showMapelOperation(self):
         while True:
             choose = str(input("""Silahkan Pilih:
-                1. Tampilkan data dengan ID
-                2. Tampilkan Semua Data
-                3. Keluar
+                1. Tampilkan Semua Data
+                2. Keluar
 Masukkan Pilihan: """))
             if choose == "1":
-                id = input("Masukkan ID: ")
-                self.select_data(id)
-            elif choose == "2":
                 self.select_data_all()
-            elif choose == "3":
+            elif choose == "2":
                 print("Keluar!")
                 break
             else:
