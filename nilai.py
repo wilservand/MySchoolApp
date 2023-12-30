@@ -84,8 +84,8 @@ class Nilai (ct.CTkFrame):
 
         self.table.place(x=140,y=250)
 
-        self.button_cari = ct.CTkButton(master= self, height=80, width=150, text='cari', fg_color="#00df00", font=('montserrat',17), command=lambda: self.konfirmasi_murid())
-        self.button_ubah = ct.CTkButton(master= self, height=80, width=150, text='ubah', fg_color="#ff7500", font=('montserrat',17))
+        self.button_cari = ct.CTkButton(master= self, height=80, width=150, text='cari', fg_color="#00df00", font=('montserrat',17), command=lambda: self.pemastian_murid_nilai_cari())
+        self.button_ubah = ct.CTkButton(master= self, height=80, width=150, text='ubah', fg_color="#ff7500", font=('montserrat',17),command=lambda: self.ubah_nilai_tugas())
         self.button_cari.place(x=670, y=40)
         self.button_ubah.place(x=670, y=140)
 
@@ -102,12 +102,14 @@ class Nilai (ct.CTkFrame):
         self.isi_pilihan_kelas = [self.hasil_cari_pilihan_kelas]
 
     def konfirmasi_murid(self):
-        self.apakah_ada = 'SELECT siswa.data_siswa.nis FROM siswa.data_siswa WHERE siswa.nilai.nis = %s'
+        self.apakah_ada = 'SELECT siswa.data_siswa.nis FROM siswa.data_siswa WHERE siswa.data_siswa.nis = %s'
         self.curr.execute(self.apakah_ada, args=(self.entry_id.get()))
         self.belum = self.curr.fetchall()
-        if self.entry_id.get() in self.belum:
-            self.nambah_data()
-        else:
+        try:
+            for belum in self.belum:
+                if self.entry_id.get() == belum:
+                    self.nambah_data()
+        except:
             self.murid_tidak_ada = messagebox.showerror("error", "Murid Tidak Ada")
 
     def pemastian_murid (self):
@@ -117,7 +119,7 @@ class Nilai (ct.CTkFrame):
         self.panjang_nilai_tugas = len(self.hasil_cari_murid_nilai)
 
     def execute_cari(self):
-        self.execute_cari_id = 'SELECT DISTINCT siswa.data_siswa.nis, siswa.data_siswa.nama, siswa.data_siswa.kelas, siswa.mata_pelajaran.mataPelajaran FROM siswa.nilai LEFT JOIN siswa.data_siswa ON %s = siswa.data_siswa.nis LEFT JOIN siswa.mata_pelajaran ON %s = siswa.mata_pelajaran.mataPelajaran LEFT JOIN siswa.data_siswa ON %s = siswa.data_siswa.kelas'
+        self.execute_cari_id = 'SELECT * FROM siswa.nilai WHERE siswa.nilai.nis = %s AND siswa.nilai.matkul = %s AND siswa.nilai.kelas = %s'
         self.curr.execute(self.execute_cari_id, args=(self.entry_id.get(), self.entry_id_matkul.get(), self.entry_id_kelas.get()))
         self.kasar = self.curr.fetchall()
         self.data_show()
@@ -126,13 +128,13 @@ class Nilai (ct.CTkFrame):
         self.cari_ubah_nilai_tugas = 'UPDATE siswa.nilai SET siswa.nilai.nilai_tugas = %s WHERE siswa.nilai.nis = %s AND siswa.nilai.matkul = %s AND siswa.nilai.kelas = %s'
         self.curr.execute(self.cari_ubah_nilai_tugas, args = (int(self.entry_nilai_tugas.get()), self.entry_id.get(),self.entry_id_matkul.get(), self.entry_id_kelas.get()))
         self.conn.commit()
-        self.berhasil_nilai_tugas = messagebox('berhasil', 'nilai tugas berhasil diubah')
+        self.berhasil_nilai_tugas = messagebox('nilai tugas berhasil diubah')
     
     def ubah_nilai_ujian(self):
         self.cari_ubah_nilai_ujian = 'UPDATE siswa.nilai SET siswa.nilai.nilai_ujian = %s WHERE siswa.nilai.nis = %s AND siswa.nilai.matkul = %s AND siswa.nilai.kelas = %s'
-        self.curr.execute(self.cari_ubah_nilai_ujian, args = (int(self.entry_nilai_ujian.get()), self.entry_id.get(),self.entry_id_matkul.get(), self.entry_id_kelas.get())))
+        self.curr.execute(self.cari_ubah_nilai_ujian, args = (int(self.entry_nilai_ujian.get()), self.entry_id.get(),self.entry_id_matkul.get(), self.entry_id_kelas.get()))
         self.conn.commit()
-        self.berhasil_nilai_ujian = messagebox('berhasil', 'nilai ujian berhasil diubah')
+        self.berhasil_nilai_ujian = messagebox('nilai ujian berhasil diubah')
 
     def pemastian_murid_nilai_ujian (self):
         self.pemastian_murid()
@@ -157,11 +159,12 @@ class Nilai (ct.CTkFrame):
         self.execute_cari()
 
     def nambah_data(self):
-        self.execute_cari_id = 'SELECT DISTINCT siswa.data_siswa.nis, siswa.data_siswa.nama, siswa.data_siswa.kelas, siswa.mata_pelajaran.mataPelajaran FROM siswa.nilai LEFT JOIN siswa.data_siswa ON %s = siswa.data_siswa.nis LEFT JOIN siswa.mata_pelajaran ON %s = siswa.mata_pelajaran.mataPelajaran LEFT JOIN siswa.data_siswa ON %s = siswa.data_siswa.kelas'
-        self.curr.execute(self.execute_cari_id, args=(self.entry_id.get(), self.entry_id_matkul.get(), self.entry_id_matkul.get()))
-        self.kasar = self.curr.fetchall()
-        self.nambah_data_murid = 'INSERT INTO siswa.nilai (nis, nama, kelas, matkul) VALUES %s '
-        self.curr.execute(self.execute_cari_id, args=(self.kasar))
+        self.cari_nama_murid = 'SELECT siswa.data_siswa.nama FROM siswa.data_siswa WHERE siswa.data_siswa.nis = %s'
+        self.curr.execute(self.cari_nama_murid, args=(self.entry_id.get()))
+        self.nama_murid = self.curr.fetchone()
+        print(self.nama_murid)
+        self.nambah_data_murid = 'INSERT INTO siswa.nilai (nis, nama, kelas, matkul, nilai_tugas, nilai_ujian, nilai_rata_rata) VALUES (%s,%s,%s,%s,0,0,0) '
+        self.curr.execute(self.nambah_data_murid, args=(self.entry_id.get(),self.nama_murid, self.entry_id_matkul.get(), self.entry_id_matkul.get()))
         self.conn.commit()
         self.data_show()
 
@@ -169,7 +172,7 @@ class Nilai (ct.CTkFrame):
         self.nangkap_nilai = 'SELECT siswa.nilai.nilai_tugas, siswa.nilai.nilai_ujian FROM siswa.nilai WHERE siswa.nilai.nis = %s AND siswa.nilai.matkul = %s AND siswa.nilai.kelas = %s '
         self.curr.execute(self.nangkap_nilai, args = (self.entry_id.get(), self.entry_id_matkul.get(), self.entry_id_kelas.get()))
         self.nilai_kasar = self.curr.fetchall()
-        self.nilai_sekarang = self.nilai_kasar[]
+        self.nilai_sekarang = [self.nilai_kasar]
         self.rata_rata_baru = st.mean(self.nilai_sekarang)
         self.update_rata_rata = 'UPDATE siswa.nilai SET siswa.nilai.nilai_rata_rata = %s WHERE siswa.nilai.nis = %s AND siswa.nilai.matkul = %s AND siswa.nilai.kelas = %s'
         self.curr.execute(self.update_rata_rata, args = (self.rata_rata_baru,self.entry_id.get(), self.entry_id_matkul.get(), self.entry_id_kelas.get()))
@@ -188,9 +191,9 @@ class Nilai (ct.CTkFrame):
             self.table.delete(lama)
         for isi in sample:
             self.table.insert('', tkinter.END, values=isi[0:])
-        return sample,isi
+        return sample
 
-    def item_selected(event):
+    def item_selected(self, event):
         for selected_item in self.table.selection():
             item = self.table.item(selected_item)
             record = item['values']
