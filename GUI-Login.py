@@ -5,6 +5,7 @@ import customtkinter
 import customtkinter as ct
 from PIL import ImageTk, Image
 from main import *
+from nilai import *
 
 
 class Login():
@@ -95,6 +96,7 @@ class Login():
 dbApp = mainDB()
 conn_dbApp, curr_dbApp = dbApp.connect()
 myschool_login = Login(curr_dbApp,conn_dbApp)
+myschool_nilai = Nilai(curr_dbApp,conn_dbApp)
 
 customtkinter.set_appearance_mode('light')
 
@@ -118,12 +120,12 @@ class MySchoolApp(customtkinter.CTk):
         self.backframez = ct.CTkFrame(master=self, width=400, height=600, fg_color='orange', corner_radius=0)
         self.backframez.place(rely=0,relx=1,anchor=tkinter.NE)
 
-        img = Image.open('siswa_art.png')
-        new_size = (650, 650)
-        img_resized = img.resize(new_size)
-        img_tk = ImageTk.PhotoImage(img_resized)
-        self.background_label = ct.CTkLabel(master=self, image=img_tk, text="")
-        self.background_label.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
+        #img = Image.open('siswa_art.png')
+       # new_size = (650, 650)
+      #  img_resized = img.resize(new_size)
+      #  img_tk = ImageTk.PhotoImage(img_resized)
+     #   self.background_label = ct.CTkLabel(master=self, image=img_tk, text="")
+     #   self.background_label.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
         self.loginFrame()
 
     def loginFrame(self):
@@ -148,7 +150,7 @@ class MySchoolApp(customtkinter.CTk):
 
     def menu_siswa(self):
         self.backframez.destroy()
-        self.background_label.destroy()
+       # self.background_label.destroy()
         self.listMenuSiswa()
         self.profileSiswa()
 
@@ -165,7 +167,7 @@ class MySchoolApp(customtkinter.CTk):
         self.matpelButton.place(relx=0.5, rely=0.275, anchor=tkinter.CENTER)
         self.nilaiButton = ct.CTkButton(master=self.menu_siswaFrame, width=120, height=30, corner_radius=10,
                                          fg_color='orange', text_color='black', text="Nilai",
-                                         command=self.mataPelajaranSiswa)
+                                         command=self.nilaiSiswa)
         self.nilaiButton.place(relx=0.5, rely=0.35, anchor=tkinter.CENTER)
         self.absensiButton = ct.CTkButton(master=self.menu_siswaFrame, width=120, height=30, corner_radius=10,
                                          fg_color='orange', text_color='black', text="Absensi",
@@ -226,6 +228,7 @@ class MySchoolApp(customtkinter.CTk):
         self.listMenuSiswa()
         self.nilaiFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
         self.nilaiFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
+        myschool_nilai.setup_ui(self.nilaiFrame)
 
     def logout(self):
         for x in self.winfo_children():
