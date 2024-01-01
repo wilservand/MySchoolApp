@@ -7,6 +7,7 @@ from PIL import ImageTk, Image
 from main import *
 from nilai import *
 from kelasv8 import *
+from absen import *
 
 
 class Login():
@@ -99,6 +100,7 @@ conn_dbApp, curr_dbApp = dbApp.connect()
 myschool_login = Login(curr_dbApp,conn_dbApp)
 myschool_nilai = Nilai(curr_dbApp,conn_dbApp)
 myschool_kelas = kelas(curr_dbApp,conn_dbApp)
+myschool_absen = absen(curr_dbApp,conn_dbApp)
 
 customtkinter.set_appearance_mode('light')
 
@@ -173,11 +175,11 @@ class MySchoolApp(customtkinter.CTk):
         self.nilaiButton.place(relx=0.5, rely=0.35, anchor=tkinter.CENTER)
         self.absensiButton = ct.CTkButton(master=self.menu_siswaFrame, width=120, height=30, corner_radius=10,
                                          fg_color='orange', text_color='black', text="Absensi",
-                                         command=self.mataPelajaranSiswa)
+                                         command=self.absenSiswa)
         self.absensiButton.place(relx=0.5, rely=0.425, anchor=tkinter.CENTER)
         self.kelasButton = ct.CTkButton(master=self.menu_siswaFrame, width=120, height=30, corner_radius=10,
                                          fg_color='orange', text_color='black', text="Kelas",
-                                         command=self.mataPelajaranSiswa)
+                                         command=self.kelasSiswa)
         self.kelasButton.place(relx=0.5, rely=0.500, anchor=tkinter.CENTER)
         self.logoutButton = ct.CTkButton(master=self.menu_siswaFrame, width=120, height=30, corner_radius=10,
                                           fg_color='orange', text_color='black', text="Log Out",
@@ -240,9 +242,17 @@ class MySchoolApp(customtkinter.CTk):
         for x in self.winfo_children():
             x.destroy()
         self.listMenuSiswa()
-        self.kelasFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='blue', corner_radius=0)
+        self.kelasFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
         self.kelasFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
         myschool_kelas.setup_uiKelas(self.kelasFrame)
+
+    def absenSiswa(self):
+        for x in self.winfo_children():
+            x.destroy()
+        self.listMenuSiswa()
+        self.absenFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
+        self.absenFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
+        myschool_absen.ui(self.absenFrame)
 
     def logout(self):
         for x in self.winfo_children():
