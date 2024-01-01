@@ -8,6 +8,7 @@ from main import *
 from nilai import *
 from kelasv8 import *
 from absen import *
+from mataPel2 import * 
 
 
 class Login():
@@ -101,6 +102,8 @@ myschool_login = Login(curr_dbApp,conn_dbApp)
 myschool_nilai = Nilai(curr_dbApp,conn_dbApp)
 myschool_kelas = kelas(curr_dbApp,conn_dbApp)
 myschool_absen = absen(curr_dbApp,conn_dbApp)
+myschool_mapel = mataPelajaran(curr_dbApp,conn_dbApp)
+
 
 customtkinter.set_appearance_mode('light')
 
@@ -228,6 +231,7 @@ class MySchoolApp(customtkinter.CTk):
         self.listMenuSiswa()
         self.matpelFrame = ct.CTkFrame(master=self, width=830, height=600, fg_color='white', corner_radius=0)
         self.matpelFrame.place(relx=0.17,rely=0.5,anchor=tkinter.W)
+        myschool_mapel.setup_uimatapelajaran(self.matpelFrame)
 
 
     def nilaiSiswa(self):
