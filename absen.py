@@ -41,7 +41,7 @@ class absen (ct.CTk):
 
         self.table.place(x=140,y=270)
 
-        self.button_cari = ct.CTkButton(master= masterss, height=80, width=150, text='Cari',fg_color='#0060ff', font=('montserrat',17))
+        self.button_cari = ct.CTkButton(master= masterss, height=80, width=150, text='Cari',fg_color='#0060ff', font=('montserrat',17), command=lambda :self.execute_cari())
         self.button_ubah = ct.CTkButton(master= masterss, height=80, width=150, text='Simpan',fg_color='#ff5f00', font=('montserrat',17))
         self.button_cari.place(x=655, y=60)
         self.button_ubah.place(x=655, y=150)
@@ -67,8 +67,12 @@ class absen (ct.CTk):
         self.hasil_kelas = self.curr.fetchall()
         self.isi_kelas = [item[0] for item in self.hasil_kelas]
 
-        self.combobox_kelas = ct.CTkComboBox(master=masterss, values=self.isi_kelas, width=225, font=self.font)
-        self.combobox_matkul = ct.CTkComboBox(master=masterss, values=self.isi_mapel, width=225, font=self.font)
+        self.var_kelas = tk.StringVar()
+        self.var_matkul = tk.StringVar()
+
+
+        self.combobox_kelas = ct.CTkComboBox(master=masterss, values=self.isi_kelas, width=225, font=self.font, variable=self.var_kelas)
+        self.combobox_matkul = ct.CTkComboBox(master=masterss, values=self.isi_mapel, width=225, font=self.font, variable= self.var_matkul)
         self.combobox_kelas.set('pilih kelas')
         self.combobox_matkul.set('pilih mata pelajaran')
         self.combobox_kelas.place(x=130, y=110)
@@ -78,6 +82,7 @@ class absen (ct.CTk):
         self.cari_murid = 'SELECT * FROM siswa.absensi WHERE siswa.absensi.nis_siswa = %s AND siswa.absensi.mapel_siswa = %s AND siswa.absensi.kelas_siswa = %s'
         self.curr.execute(self.cari_murid, args = (self.entry_nis_murid.get(), self.combobox_matkul.get(), self.combobox_kelas.get()))
         self.hasil_cari = self.curr.fetchall()
+        print(self.hasil_cari)
         self.data_show(self.hasil_cari)
 
     def data_show(self,kasar):
