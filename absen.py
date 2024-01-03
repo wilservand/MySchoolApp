@@ -41,7 +41,7 @@ class absen (ct.CTk):
 
         self.table.place(x=140,y=270)
 
-        self.button_cari = ct.CTkButton(master= masterss, height=80, width=150, text='Cari',fg_color='#0060ff', font=('montserrat',17), command=lambda: self.test_print())
+        self.button_cari = ct.CTkButton(master= masterss, height=80, width=150, text='Cari',fg_color='#0060ff', font=('montserrat',17))
         self.button_ubah = ct.CTkButton(master= masterss, height=80, width=150, text='Simpan',fg_color='#ff5f00', font=('montserrat',17))
         self.button_cari.place(x=655, y=60)
         self.button_ubah.place(x=655, y=150)
@@ -57,30 +57,46 @@ class absen (ct.CTk):
         self.radiobutton_sakit = ct.CTkRadioButton(master=masterss, text="Sakit",font=self.font, variable=var, value='sakit')
         self.radiobutton_sakit.place(x=490,y=195)
 
-        self.list_kelas = ['1TIMA','1TIMB','2TIMA','2TIMB']
-        self.list_matkul = ['Matematika','IPA','IPS']
+        self.cari_mapel = 'SELECT DISTINCT siswa.mata_pelajaran.mataPelajaran FROM siswa.mata_pelajaran'
+        self.curr.execute(self.cari_mapel)
+        self.hasil_mapel = self.curr.fetchall()
+        self.isi_mapel = [item[0] for item in self.hasil_mapel]
 
-        self.combobox_kelas = ct.CTkComboBox(master=masterss, values=self.list_kelas, width=225, font=self.font)
-        self.combobox_matkul = ct.CTkComboBox(master=masterss, values=self.list_matkul, width=225, font=self.font)
+        self.cari_kelas = 'SELECT DISTINCT siswa.kelas.nama_kelas FROM siswa.kelas'
+        self.curr.execute(self.cari_kelas)
+        self.hasil_kelas = self.curr.fetchall()
+        self.isi_kelas = [item[0] for item in self.hasil_kelas]
+
+        self.combobox_kelas = ct.CTkComboBox(master=masterss, values=self.isi_kelas, width=225, font=self.font)
+        self.combobox_matkul = ct.CTkComboBox(master=masterss, values=self.isi_mapel, width=225, font=self.font)
         self.combobox_kelas.set('pilih kelas')
         self.combobox_matkul.set('pilih mata pelajaran')
         self.combobox_kelas.place(x=130, y=110)
         self.combobox_matkul.place(x=380, y=110)
 
-        self.test_label = ct.CTkLabel(master=masterss, text="",anchor="e",justify = "right",width=140)
-        self.test_label.place(x=130,y=220)
+    def execute_cari(self):
+        self.cari_murid = 'SELECT * FROM siswa.absensi WHERE siswa.absensi.nis_siswa = %s AND siswa.absensi.mapel_siswa = %s AND siswa.absensi.kelas_siswa = %s'
+        self.curr.execute(self.cari_murid, args = (self.entry_nis_murid.get(), self.combobox_matkul.get(), self.combobox_kelas.get()))
+        self.hasil_cari = self.curr.fetchall()
+        self.data_show(self.hasil_cari)
 
-    def test_print(self):
-        self.test_label.configure(text=self.combobox_kelas.get())
+    def data_show(self,kasar):
+        sample = kasar
+        for lama in self.table.get_children():
+            self.table.delete(lama)
+        for isi in sample:
+            self.table.insert('', tk.END, values=isi[0:])
+        return sample
 
-    def pilih_mapel(self):
-        self.cari_mapel = 'SELECT DISTINCT mata_pelajaran.mataPelajaran FROM mata_pelajaran'
-        self.curr.execute(self.cari_mapel)
-        self.hasil_mapel = self.curr.fetchall()
-        self.isi_mapel = [self.hasil_mapel]
+    def item_selected(event):
+        for selected_item in self.table.selection():
+            item = self.table.item(selected_item)
+            record = item['values']
+            # show a message
+            showinfo(title='Information', message=','.join(record))
 
-    def pilih_kelas(self):
-        self.cari_kelas = 'SELECT DISTINCT kelas.kelas FROM kelas'
-        self.curr.execute(self.cari_kelas)
-        self.hasil_kelas = self.curr.fetchall()
-        self.isi_kelas = [self.hasil_kelas]
+
+        self.table.bind('<<TreeviewSelect>>', item_selected)
+    
+
+    
