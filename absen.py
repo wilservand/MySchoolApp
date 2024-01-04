@@ -42,19 +42,19 @@ class absen (ct.CTk):
         self.table.place(x=140,y=270)
 
         self.button_cari = ct.CTkButton(master= masterss, height=80, width=150, text='Cari',fg_color='#0060ff', font=('montserrat',17), command=lambda :self.execute_cari())
-        self.button_ubah = ct.CTkButton(master= masterss, height=80, width=150, text='Simpan',fg_color='#ff5f00', font=('montserrat',17))
+        self.button_ubah = ct.CTkButton(master= masterss, height=80, width=150, text='Simpan',fg_color='#ff5f00', font=('montserrat',17), command= lambda : self.update_absen())
         self.button_cari.place(x=655, y=60)
         self.button_ubah.place(x=655, y=150)
 
-        var = tk.StringVar()
+        self.var = tk.StringVar()
 
-        self.radiobutton_hadir = ct.CTkRadioButton(master=masterss, text="Hadir",font=self.font, variable=var, value='hadir')
+        self.radiobutton_hadir = ct.CTkRadioButton(master=masterss, text="Hadir",font=self.font, variable=self.var, value='hadir')
         self.radiobutton_hadir.place(x=130,y=195)
-        self.radiobutton_alpha = ct.CTkRadioButton(master=masterss, text="Alpha",font=self.font, variable=var, value='alpha')
+        self.radiobutton_alpha = ct.CTkRadioButton(master=masterss, text="Alpha",font=self.font, variable=self.var, value='alpha')
         self.radiobutton_alpha.place(x=250,y=195)
-        self.radiobutton_ijin = ct.CTkRadioButton(master=masterss, text="Ijin",font=self.font, variable=var, value='ijin')
+        self.radiobutton_ijin = ct.CTkRadioButton(master=masterss, text="Ijin",font=self.font, variable=self.var, value='ijin')
         self.radiobutton_ijin.place(x=370,y=195)
-        self.radiobutton_sakit = ct.CTkRadioButton(master=masterss, text="Sakit",font=self.font, variable=var, value='sakit')
+        self.radiobutton_sakit = ct.CTkRadioButton(master=masterss, text="Sakit",font=self.font, variable=self.var, value='sakit')
         self.radiobutton_sakit.place(x=490,y=195)
 
         self.cari_mapel = 'SELECT DISTINCT siswa.mata_pelajaran.mataPelajaran FROM siswa.mata_pelajaran'
@@ -100,8 +100,17 @@ class absen (ct.CTk):
             # show a message
             showinfo(title='Information', message=','.join(record))
 
-
         self.table.bind('<<TreeviewSelect>>', item_selected)
+
+    def update_absen(self):
+        self.update_kehadiran = 'UPDATE siswa.absensi SET siswa.absensi.status_kehadiran = %s WHERE siswa.absensi.nis_siswa = %s AND siswa.absensi.kelas_siswa = %s AND siswa.absensi.mapel_siswa = %s'
+        self.curr.execute(self.update_kehadiran, args = (self.var.get(), self.entry_nis_murid.get(), self.combobox_kelas.get(), self.combobox_matkul.get()))
+        self.conn.commit()
+        print(self.var.get())
+        self.execute_cari()
+
+
+        
     
 
     
