@@ -48,21 +48,26 @@ class absen (ct.CTk):
 
         self.var = tk.StringVar()
 
-        self.radiobutton_hadir = ct.CTkRadioButton(master=masterss, text="Hadir",font=self.font, variable=self.var, value='hadir')
-        self.radiobutton_hadir.place(x=130,y=195)
-        self.radiobutton_alpha = ct.CTkRadioButton(master=masterss, text="Alpha",font=self.font, variable=self.var, value='alpha')
-        self.radiobutton_alpha.place(x=250,y=195)
-        self.radiobutton_ijin = ct.CTkRadioButton(master=masterss, text="Ijin",font=self.font, variable=self.var, value='ijin')
-        self.radiobutton_ijin.place(x=370,y=195)
-        self.radiobutton_sakit = ct.CTkRadioButton(master=masterss, text="Sakit",font=self.font, variable=self.var, value='sakit')
-        self.radiobutton_sakit.place(x=490,y=195)
+        self.radiobutton_hadir = ct.CTkRadioButton(master=masterss, text="Hadir", font=self.font, variable=self.var,
+                                                   value='H')
+        self.radiobutton_hadir.place(x=130, y=195)
+        self.radiobutton_alpha = ct.CTkRadioButton(master=masterss, text="Alpha", font=self.font, variable=self.var,
+                                                   value='A')
+        self.radiobutton_alpha.place(x=250, y=195)
+        self.radiobutton_ijin = ct.CTkRadioButton(master=masterss, text="Ijin", font=self.font, variable=self.var,
+                                                  value='I')
+        self.radiobutton_ijin.place(x=370, y=195)
+        self.radiobutton_sakit = ct.CTkRadioButton(master=masterss, text="Sakit", font=self.font, variable=self.var,
+                                                   value='S')
+        self.radiobutton_sakit.place(x=490, y=195)
 
-        self.cari_mapel = 'SELECT DISTINCT siswa.mata_pelajaran.mataPelajaran FROM siswa.mata_pelajaran'
+
+        self.cari_mapel = 'SELECT mataPelajaran FROM `mata_pelajaran`'
         self.curr.execute(self.cari_mapel)
         self.hasil_mapel = self.curr.fetchall()
         self.isi_mapel = [item[0] for item in self.hasil_mapel]
 
-        self.cari_kelas = 'SELECT DISTINCT siswa.kelas.nama_kelas FROM siswa.kelas'
+        self.cari_kelas = 'SELECT nama_kelas FROM `kelas`'
         self.curr.execute(self.cari_kelas)
         self.hasil_kelas = self.curr.fetchall()
         self.isi_kelas = [item[0] for item in self.hasil_kelas]
